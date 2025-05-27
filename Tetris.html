@@ -5,103 +5,137 @@
         <style>
             #demo {
                 text-align: center;
+                font-family: monospace;
+                white-space: pre;
             }
         </style>
-        <script>
-            const FilledPositionsOnBoard_X = [];
-            const FilledPositionsOnBoard_Y = [];
-            //Narysowanie kwadratu
-            const SquareX = [];
-            const SquareY = [];
-            SquareX[0] = 0;
-            SquareY[0] = 0;
-            SquareX[1] = 1;
-            SquareY[1] = 0;
-            SquareX[2] = 0;
-            SquareY[2] = 1;
-            SquareX[3] = 1;
-            SquareY[3] = 1;
+            <script src="square.js"></script>
+            <script src="line.js"></script>
+            <script src="random.js"></script>
+            <script>
+            let BlockX = [];
+            let BlockY = [];
+            let LineX = [];
+            let LineY = [];
+            let NumberOfActuallBlock = RandomBlock();
+            if(NumberOfActuallBlock == 1){
+                BuildSquare();
+                BlockX = SquareX;
+                BlockY = SquareY;
+            }
+            if(NumberOfActuallBlock == 2){
+                BuildLine();
+                BlockX = LineX;
+                BlockY = LineY;
+            }
+
+            const FilledPositionsOnBoard_True = [];
             let output = "";
             let postawiono = 0;
+            let linia = 0;
+            let klocek = 0;
+            let usunieto_linie = 0;
             const Board = [];
             for(let i = 0; i < 20; i++){
                 Board[i] = [];
+                FilledPositionsOnBoard_True[i] = [];
                 for(let j = 0; j < 20; j++){
                     Board[i][j] = 0;
+                    FilledPositionsOnBoard_True[i][j] = 0;
                 }
             }
             function drawBoard(){
-                //rysowanie postawionych figur
-                for(let i = 0; i < FilledPositionsOnBoard_X.length; i++){
-                    Board[FilledPositionsOnBoard_Y[i]][FilledPositionsOnBoard_X[i]] = 1;
-                }
-                //rysowanie kwadratu
                 for(let i = 0; i < 4; i++){
-                    Board[SquareY[i]][SquareX[i]] = 1;
-                }
-                for(let i = 0; i < 4; i++){
-                    SquareY[i] += 1;
-                }
-                for(let i = 0; i < FilledPositionsOnBoard_X.length; i++){
-                    if(SquareY[3] + 1 == FilledPositionsOnBoard_Y[i] && SquareX[3] == FilledPositionsOnBoard_X[i]
-                    || SquareY[2] + 1 == FilledPositionsOnBoard_Y[i] && SquareX[2] == FilledPositionsOnBoard_X[i]){
-                        for(let j = 0; j < 4; j++){
-                        FilledPositionsOnBoard_X.push(SquareX[j]);
-                        FilledPositionsOnBoard_Y.push(SquareY[j]);
-                        }
+                    nextY = BlockY[i] + 1;
+                    if(nextY >= 20 || Board[nextY][BlockX[i]] == 1){
+                        for(let k = 0; k < 4; k++)
+                            FilledPositionsOnBoard_True[BlockY[k]][BlockX[k]] = 1;
                         postawiono = 1;
                     }
                 }
-                if(SquareY[3] == 19 && SquareY[2] == 19){
-                    for(let i = 0; i < 4; i++){
-                        FilledPositionsOnBoard_X.push(SquareX[i]);
-                        FilledPositionsOnBoard_Y.push(SquareY[i]);
-                        postawiono = 1;
-                }
+                for(let i = 0; i < 4; i++){
+                    BlockY[i] += 1;
                 }
                 if(postawiono){
-                    SquareX[0] = 0;
-                SquareY[0] = 0;
-                SquareX[1] = 1;
-                SquareY[1] = 0;
-                SquareX[2] = 0;
-                SquareY[2] = 1;
-                SquareX[3] = 1;
-                SquareY[3] = 1;
-                postawiono = 0;
+                    NumberOfActuallBlock = RandomBlock();
+                    if(NumberOfActuallBlock == 1){
+                        BuildSquare();
+                        BlockX = SquareX;
+                        BlockY = SquareY;
+                    }
+                    if(NumberOfActuallBlock == 2){
+                        BuildLine();
+                        BlockX = LineX;
+                        BlockY = LineY;
+                    }
+                    postawiono = 0;
                 }
-                //rysowanie planszy
                 for(let i = 0; i < 20; i++){
                     for(let j = 0; j < 20; j++){
-                        output += Board[i][j] == 0 ? "X":"O";
-                        Board[i][j] = 0;
+                        Board[i][j] = FilledPositionsOnBoard_True[i][j];
+                    }
                 }
+                for(let i = 19; i > 0; i--){
+                    for(let j = 0; j <20; j++){
+                        if(Board[i][j] == 1){
+                            linia++;
+                        }
+                            if(linia == 20){
+                                usunieto_linie++;
+                                for(let k = 0; k < 20; k++){
+                                    FilledPositionsOnBoard_True[i][k] = 0;
+                                    Board[i][k] = FilledPositionsOnBoard_True[i][k];
+                                }
+                            }
+                    }
+                    linia = 0;
+                }
+                if(usunieto_linie > 0){
+                    for(let i = 19; i >= 0; i--){
+                        for(let j = 0; j < 20; j++){
+                            if(FilledPositionsOnBoard_True[i][j] == 1){
+                                FilledPositionsOnBoard_True[i + usunieto_linie][j] = FilledPositionsOnBoard_True[i][j];
+                                FilledPositionsOnBoard_True[i][j] = 0;
+                            }
+                        }
+                    }
+                }
+                for(let i = 0; i < 4; i++){
+                    Board[BlockY[i]][BlockX[i]] = 1;
+                }
+                for(let i = 0; i < 20; i++){
+                    for(let j = 0; j < 20; j++){
+                        output += Board[i][j] == 0 ? ".":"O";
+                            if(FilledPositionsOnBoard_True[i][j] == 0)
+                                Board[i][j] = 0;
+                    }
                 output += "<br>";
                 }
                 document.getElementById("demo").innerHTML = output;
                 output = "";
+                usunieto_linie = 0;
             }
         </script>
         <script>
             function KeysRegisterer(){
                 document.addEventListener("keydown",function(event) {
                     if(event.key == "ArrowLeft") {
-                            if(SquareX[0] > 0 && SquareX[2] > 0){
+                            if(BlockX[0] > 0 && BlockX[2] > 0){
                                 for(let i = 0; i < 4; i++)
-                                    SquareX[i] -= 1;
+                                    BlockX[i] -= 1;
                             }
                     }
                     if(event.key == "ArrowRight") {
-                            if(SquareX[1] < 19 && SquareX[3] < 19){
+                            if(BlockX[1] < 19 && BlockX[3] < 19){
                             for(let i = 0; i < 4; i++)
-                                SquareX[i] += 1;
+                                BlockX[i] += 1;
                             }
                     }
                 });
             }
         </script>
     </head>
-    <body onload="ReloadPage">
+    <body>
         <div id = "demo"></div>
         <script>
             setInterval(drawBoard,300);

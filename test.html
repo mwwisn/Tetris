@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+            #demo {
+                text-align: center;
+                font-family: monospace;
+                white-space: pre;
+            }
+        </style>
+        <script>
+            const FilledPositionsOnBoard_True = [];
+            //budowanie lini
+            const LineX = [];
+            const LineY = [];
+            const Transformation = [];
+            LineX[0] = 0;
+            LineY[0] = 0;
+            LineX[1] = 0;
+            LineY[1] = 1;
+            LineX[2] = 0;
+            LineY[2] = 2;
+            LineX[3] = 0;
+            LineY[3] = 3;
+
+            let output = "";
+            let postawiono = 0;
+            let linia = 0;
+            const Board = [];
+            for(let i = 0; i < 20; i++){
+                Board[i] = [];
+                FilledPositionsOnBoard_True[i] = [];
+                for(let j = 0; j < 20; j++){
+                    Board[i][j] = 0;
+                    FilledPositionsOnBoard_True[i][j] = 0;
+                }
+            }
+            function drawBoard(){
+                for(let i = 0; i < 4; i++){
+                    Board[LineY[i]][LineX[i]] = 1;
+                }
+                for(let i = 0; i < 4; i++){
+                    LineY[i] += 1;
+                }
+                for(let i = 0; i < 20; i++){
+                    for(let j = 0; j < 20; j++){
+                        output += Board[i][j] ? "O":".";
+                        Board[i][j] = 0;
+                    }
+                    output += "<br>";
+                }
+                document.getElementById("demo").innerHTML = output;
+                output = "";
+            }
+
+        </script>
+        <script>
+            function KeysRegisterer(){
+                document.addEventListener("keydown",function(event) {
+                    if(event.key == "ArrowLeft") {
+                            if(LineX[0] > 0){
+                                for(let i = 0; i < 4; i++)
+                                    LineX[i] -= 1;
+                            }
+                    }
+                    if(event.key == "ArrowRight") {
+                            if(LineX[0] < 19){
+                            for(let i = 0; i < 4; i++)
+                                LineX[i] += 1;
+                            }
+                    }
+                    if(event.key == "ArrowUp") {
+                        for(let i = 0; i < 4; i++){
+                            Transformation[i] = LineX[i];
+                        }
+                        for(let i = 0; i < 4; i++){
+                            LineX[i] = LineY[i];
+                            LineY[i] = Transformation[i];
+                        }
+                    }
+                });
+            }
+        </script>
+    </head>
+    <body>
+        <p id = "demo"></p>
+        <script>
+            setInterval(drawBoard,300);
+            KeysRegisterer();
+        </script>
+    </body>
+</html>
