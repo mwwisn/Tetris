@@ -52,6 +52,7 @@
             let linia = 0;
             let klocek = 0;
             let usunieto_linie = 0;
+            let index_ostatnio_usunietej_lini;
             const Board = [];
             for(let i = 0; i < 20; i++){
                 Board[i] = [];
@@ -114,6 +115,7 @@
                         }
                             if(linia == 20){
                                 usunieto_linie++;
+                                index_ostatnio_usunietej_lini = i;
                                 for(let k = 0; k < 20; k++){
                                     FilledPositionsOnBoard_True[i][k] = 0;
                                     Board[i][k] = FilledPositionsOnBoard_True[i][k];
@@ -125,7 +127,7 @@
                 if(usunieto_linie > 0){
                     for(let i = 19; i >= 0; i--){
                         for(let j = 0; j < 20; j++){
-                            if(FilledPositionsOnBoard_True[i][j] == 1){
+                            if(FilledPositionsOnBoard_True[i][j] == 1 && i < index_ostatnio_usunietej_lini){
                                 FilledPositionsOnBoard_True[i + usunieto_linie][j] = FilledPositionsOnBoard_True[i][j];
                                 FilledPositionsOnBoard_True[i][j] = 0;
                             }
@@ -164,8 +166,8 @@
                             }
                     }
                     if(event.key == "ArrowUp") {
-                        let pivotX = BlockX[0];
-                        let pivotY = BlockX[0];
+                        let pivotX = BlockX[2];
+                        let pivotY = BlockX[2];
                         let tempX = [];
                         let tempY = [];
                         let rotateX;
