@@ -1,7 +1,6 @@
 function BuildLine(){
     LineX = [];
     LineY = [];
-    Transformation = [];
     LineX[0] = 0;
     LineY[0] = 0;
     LineX[1] = 0;
