@@ -15,6 +15,8 @@
             <script src="tower.js"></script>
             <script src="zigzag.js"></script>
             <script src="rzigzag.js"></script>
+            <script src="Leg.js"></script>
+            <script src="RLeg.js"></script>
             <script>
             let BlockX = [];
             let BlockY = [];
@@ -44,6 +46,16 @@
                 BuildRzigzag();
                 BlockX = RzigzagX;
                 BlockY = RzigzagY;
+            }
+            if(NumberOfActuallBlock == 6){
+                BuildLeg();
+                BlockX = LegX;
+                BlockY = LegY;
+            }
+            if(NumberOfActuallBlock == 7){
+                BuildRleg();
+                BlockX = RLegX;
+                BlockY = RlegY;
             }
 
             const FilledPositionsOnBoard_True = [];
@@ -100,6 +112,16 @@
                         BuildRzigzag();
                         BlockX = RzigzagX;
                         BlockY = RzigzagY;
+                    }
+                    if(NumberOfActuallBlock == 6){
+                        BuildLeg();
+                        BlockX = LegX;
+                        BlockY = LegY;
+                    }
+                    if(NumberOfActuallBlock == 7){
+                        BuildRleg();
+                        BlockX = RLegX;
+                        BlockY = RlegY;
                     }
                     postawiono = 0;
                 }
@@ -167,7 +189,7 @@
                     }
                     if(event.key == "ArrowUp") {
                         let pivotX = BlockX[2];
-                        let pivotY = BlockX[2];
+                        let pivotY = BlockY[2];
                         let tempX = [];
                         let tempY = [];
                         let rotateX;
