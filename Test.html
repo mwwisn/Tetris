@@ -1,15 +1,15 @@
 <!DOCTYPE html>
-<html lang="pl">
-<head>
-    <script src="PaintBoard.js"></script>
-  <meta charset="UTF-8" />
-  <title>Tetris</title>
-  <style>
-    canvas {
-      border: 1px solid black;
-    }
-  </style>
-    <script src="square.js"></script>
+<html>
+    <head>
+        <title>Tetris</title>
+        <style>
+            #demo {
+                text-align: center;
+                font-family: monospace;
+                white-space: pre;
+            }
+        </style>
+            <script src="square.js"></script>
             <script src="line.js"></script>
             <script src="random.js"></script>
             <script src="tower.js"></script>
@@ -74,9 +74,8 @@
                     FilledPositionsOnBoard_True[i][j] = 0;
                 }
             }
-
-        function drawBoard(){
-            for(let i = 0; i < 4; i++){
+            function drawBoard(){
+                for(let i = 0; i < 4; i++){
                     nextY = BlockY[i] + 1;
                     if(nextY >= 20 || Board[nextY][BlockX[i]] == 1){
                         for(let k = 0; k < 4; k++)
@@ -84,197 +83,136 @@
                         postawiono = 1;
                     }
                 }
-            for(let i = 0; i < 4; i++){
-                BlockY[i] += 1;
-            }
-            if(postawiono){
-                NumberOfActuallBlock = RandomBlock();
-                if(NumberOfActuallBlock == 1){
-                    BuildSquare();
-                    BlockX = SquareX;
-                    BlockY = SquareY;
+                for(let i = 0; i < 4; i++){
+                    BlockY[i] += 1;
                 }
-                if(NumberOfActuallBlock == 2){
-                    BuildLine();
-                    BlockX = LineX;
-                    BlockY = LineY;
-                }
-                if(NumberOfActuallBlock == 3){
-                    BuildTower();
-                    BlockX = TowerX;
-                    BlockY = TowerY;
-                }
-                if(NumberOfActuallBlock == 4){
-                    BuildZigzag();
-                    BlockX = zigzagX;
-                    BlockY = zigzagY;
-                }
-                if(NumberOfActuallBlock == 5){
-                    BuildRzigzag();
-                    BlockX = RzigzagX;
-                    BlockY = RzigzagY;
-                }
-                if(NumberOfActuallBlock == 6){
-                    BuildLeg();
-                    BlockX = LegX;
-                    BlockY = LegY;
-                }
-                if(NumberOfActuallBlock == 7){
-                    BuildRleg();
-                    BlockX = RLegX;
-                    BlockY = RLegY;
-                }
-                postawiono = 0;
-            }
-            for(let i = 0; i < 20; i++){
-                for(let j = 0; j < 20; j++){
-                    Board[i][j] = FilledPositionsOnBoard_True[i][j];
-                }
-            }
-            for(let i = 19; i > 0; i--){
-                for(let j = 0; j <20; j++){
-                    if(Board[i][j] == 1){
-                        linia++;
+                if(postawiono){
+                    NumberOfActuallBlock = RandomBlock();
+                    console.log(NumberOfActuallBlock);
+                    if(NumberOfActuallBlock == 1){
+                        BuildSquare();
+                        BlockX = SquareX;
+                        BlockY = SquareY;
                     }
-                    if(linia == 20){
-                        usunieto_linie++;
-                        index_ostatnio_usunietej_lini = i;
-                        for(let k = 0; k < 20; k++){
-                            FilledPositionsOnBoard_True[i][k] = 0;
-                            Board[i][k] = FilledPositionsOnBoard_True[i][k];
-                        }
+                    if(NumberOfActuallBlock == 2){
+                        BuildLine();
+                        BlockX = LineX;
+                        BlockY = LineY;
                     }
+                    if(NumberOfActuallBlock == 3){
+                        BuildTower();
+                        BlockX = TowerX;
+                        BlockY = TowerY;
+                    }
+                    if(NumberOfActuallBlock == 4){
+                        BuildZigzag();
+                        BlockX = zigzagX;
+                        BlockY = zigzagY;
+                    }
+                    if(NumberOfActuallBlock == 5){
+                        BuildRzigzag();
+                        BlockX = RzigzagX;
+                        BlockY = RzigzagY;
+                    }
+                    if(NumberOfActuallBlock == 6){
+                        BuildLeg();
+                        BlockX = LegX;
+                        BlockY = LegY;
+                    }
+                    if(NumberOfActuallBlock == 7){
+                        BuildRleg();
+                        BlockX = RLegX;
+                        BlockY = RLegY;
+                    }
+                    postawiono = 0;
                 }
-                linia = 0;
-            }
-            if(usunieto_linie > 0){
-                for(let i = 19; i >= 0; i--){
+                for(let i = 0; i < 20; i++){
                     for(let j = 0; j < 20; j++){
-                        if(FilledPositionsOnBoard_True[i][j] == 1 && i < index_ostatnio_usunietej_lini){
-                            FilledPositionsOnBoard_True[i + usunieto_linie][j] = FilledPositionsOnBoard_True[i][j];
-                            FilledPositionsOnBoard_True[i][j] = 0;
+                        Board[i][j] = FilledPositionsOnBoard_True[i][j];
+                    }
+                }
+                for(let i = 19; i > 0; i--){
+                    for(let j = 0; j <20; j++){
+                        if(Board[i][j] == 1){
+                            linia++;
+                        }
+                            if(linia == 20){
+                                usunieto_linie++;
+                                index_ostatnio_usunietej_lini = i;
+                                for(let k = 0; k < 20; k++){
+                                    FilledPositionsOnBoard_True[i][k] = 0;
+                                    Board[i][k] = FilledPositionsOnBoard_True[i][k];
+                                }
+                            }
+                    }
+                    linia = 0;
+                }
+                if(usunieto_linie > 0){
+                    for(let i = 19; i >= 0; i--){
+                        for(let j = 0; j < 20; j++){
+                            if(FilledPositionsOnBoard_True[i][j] == 1 && i < index_ostatnio_usunietej_lini){
+                                FilledPositionsOnBoard_True[i + usunieto_linie][j] = FilledPositionsOnBoard_True[i][j];
+                                FilledPositionsOnBoard_True[i][j] = 0;
+                            }
                         }
                     }
                 }
-            }
-            const canvas = document.getElementById("board");
-            const ctx = canvas.getContext("2d");
-            const rows = 20;
-            const cols = 20;
-            const cellSize = canvas.width / cols;
-            for (let j = 0; j < rows; j++) {
-                for (let i = 0; i < cols; i++) {
-                    let isWhite = false
-                    for (let k = 0; k < 4; k++) {
-                        if (BlockX[k] === i && BlockY[k] === j){
-                            isWhite = true;
-                            break;
-                        }
-                    if(FilledPositionsOnBoard_True[j][i]){
-                        isWhite = true;
-                        break;
+                for(let i = 0; i < 4; i++){
+                    Board[BlockY[i]][BlockX[i]] = 1;
+                }
+                for(let i = 0; i < 20; i++){
+                    for(let j = 0; j < 20; j++){
+                        output += Board[i][j] == 0 ? ".":"O";
+                            if(FilledPositionsOnBoard_True[i][j] == 0)
+                                Board[i][j] = 0;
                     }
+                output += "<br>";
                 }
-                ctx.fillStyle = isWhite ? "#000000" : "#cccccc";
-                ctx.fillRect(i * cellSize, j * cellSize, cellSize, cellSize);
-                ctx.strokeStyle = "#ffffff";
-                ctx.strokeRect(i * cellSize, j * cellSize, cellSize, cellSize);
-                }
+                document.getElementById("demo").innerHTML = output;
+                output = "";
+                usunieto_linie = 0;
             }
-            usunieto_linie = 0;
-        }
-    </script>
-            <script>
+        </script>
+        <script>
             function KeysRegisterer(){
                 document.addEventListener("keydown",function(event) {
                     if(event.key == "ArrowLeft") {
-                        let blocked = false;
-                            for(let i = 0; i < 4; i++){
-                                if((BlockX[i] - 1) < 0){
-                                    blocked = true;
-                                    break;
-                                }
-                                if(FilledPositionsOnBoard_True[(BlockY[i])][BlockX[i] - 1] == 1){
-                                    blocked = true;
-                                    break;
-                                }
-                            }
-                            if(blocked == false){
-                                for(let i = 0; i < 4; i++){
+                            if(BlockX[0] > 0 && BlockX[2] > 0){
+                                for(let i = 0; i < 4; i++)
                                     BlockX[i] -= 1;
-                            }
                             }
                     }
                     if(event.key == "ArrowRight") {
-                            let blocked = false;
-                            for(let i = 0; i < 4; i++){
-                                if(BlockX[i] + 1 > 19){
-                                    blocked = true;
-                                    break;
-                                }
-                                if(FilledPositionsOnBoard_True[BlockY[i]][(BlockX[i]) + 1] == 1){
-                                    blocked = true;
-                                    break;
-                                }
+                            if(BlockX[1] < 19 && BlockX[3] < 19){
+                            for(let i = 0; i < 4; i++)
+                                BlockX[i] += 1;
                             }
-                            if(blocked == false){
-                                for(let i = 0; i < 4; i++)
-                                    BlockX[i] += 1;
-                            }
-
                     }
                     if(event.key == "ArrowUp") {
-                        let blocked = false;
                         let pivotX = BlockX[2];
                         let pivotY = BlockY[2];
                         let tempX = [];
                         let tempY = [];
                         let rotateX;
                         let rotateY;
-                        let testX = [];
-                        let testY = [];
                         for(let i = 0; i < 4; i++){
                             tempX[i] = BlockX[i] - pivotX;
                             tempY[i] = BlockY[i] - pivotY;
                             rotateX = -tempY[i];
                             rotateY = tempX[i];
-                            testX[i] = rotateX + pivotX;;
-                            testY[i] = rotateY + pivotY;
-                            if(testX[i] < 0 || testX[i] > 19 || FilledPositionsOnBoard_True[testY[i]][testX[i]] == 1){
-                                blocked = true;
-                                break;
-                            }
-                        }
-                        if(blocked == false){
-                            BlockX = testX;
-                            BlockY = testY;
-                        }
-                    }
-                    if(event.key == " "){
-                        let CanFly = true;
-                        while(CanFly){
-                            for(let i = 0; i < 4; i++){
-                                let nextY = BlockY[i] + 1;
-                                if(nextY >= 20 || FilledPositionsOnBoard_True[nextY][BlockX[i]] == 1){
-                                    CanFly = false;
-                                    break;
-                                }
-                            }
-                            if(CanFly){
-                                for(let i = 0; i < 4; i++)
-                                    BlockY[i] += 1;
-                            }
+                            BlockX[i] = rotateX + pivotX;
+                            BlockY[i] = rotateY + pivotY;
                         }
                     }
                 });
             }
         </script>
-</head>
-<body>
-  <canvas id="board" width="400" height="400"></canvas>
-  <script>
-    setInterval(drawBoard,300);
-    KeysRegisterer();
-  </script>
-</body>
+    </head>
+    <body>
+        <div id = "demo"></div>
+        <script>
+            setInterval(drawBoard,300);
+            KeysRegisterer();
+        </script>
+    </body>
 </html>
